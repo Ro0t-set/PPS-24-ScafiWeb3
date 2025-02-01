@@ -18,6 +18,10 @@ hero:
       link: http://tommasopatriti.me/PPS-24-ScafiWeb3/cucumber
       external: true
     - theme: alt
+      text: Coverage
+      link: http://tommasopatriti.me/PPS-24-ScafiWeb3/scoverage
+      external: true
+    - theme: alt
       text: Demo
       link: http://tommasopatriti.me/PPS-24-ScafiWeb3/dist
       external: true

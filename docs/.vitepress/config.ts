@@ -10,9 +10,10 @@ export default withMermaid(
     themeConfig: {
       // https://vitepress.dev/reference/default-theme-config
       nav: [
-        { text: 'Docs', link: '/src/introduction' }, // Fixed relative link
+        { text: 'Docs', link: '/src/introduction' },
         { text: 'GitHub', link: 'https://github.com/Ro0t-set/PPS-24-ScafiWeb3' },
         { text: 'Cucumber', link: '/cucumber/index.html', target: '_blank', rel: 'noopener noreferrer' },
+        { text: 'Coverage', link: '/scoverage/index.html', target: '_blank', rel: 'noopener noreferrer' },
         { text: 'Demo', link: '/dist/index.html', target: '_blank', rel: 'noopener noreferrer' }
       ],
 
