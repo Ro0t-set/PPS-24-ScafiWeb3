@@ -57,7 +57,7 @@ jobs:
           mkdir -p ./site/cucumber
           cp ./cucumber/target/test-reports/cucumber/cucumber.html ./site/cucumber/index.html
           mkdir -p ./site/scoverage
-          cp -r  ./js/target/scala-3.3.4/scoverage-report/* ./site/scoverage/
+          cp -r ./js/target/scala-3.3.4/scoverage-report/* ./site/scoverage/
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
