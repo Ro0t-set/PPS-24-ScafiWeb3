@@ -28,31 +28,31 @@ La coverage viene calcolata solo sui package `domain` e `API`, poiché sono gli 
 Di seguito un esempio di test (MUnit e ScalaCheck):
 
 ```scala
-  test("addNode should add a node to the state") {
-    forAll {
-      (id: Int, label: String, color: Int, x: Double, y: Double, z: Double) =>
-        val node: Set[GraphNode] =
-          Set(GraphNode(id, Position(x, y, z), label, color))
-        GraphState.commandObserver.onNext(SetNodes(node))
-        val result: Set[GraphNode] = GraphState.nodes.now()
-        result == node
-    }
+test("addNode should add a node to the state") {
+  forAll {
+    (id: Int, label: String, color: Int, x: Double, y: Double, z: Double) =>
+      val node: Set[GraphNode] =
+        Set(GraphNode(id, Position(x, y, z), label, color))
+      GraphState.commandObserver.onNext(SetNodes(node))
+      val result: Set[GraphNode] = GraphState.nodes.now()
+      result == node
   }
+}
 ```
 
 ## Cucumber
 
 ```gherkin
-    Feature: Unit Test Feature
-    @unit
-    Scenario Outline: Unit Test Scenario
-        Then The unit tests called "<testName>" should pass
-        Examples:
-        | testName                 |
-        | state.AnimationStateSpec |
-        | state.GraphStateSpec     |
-        | API.NodeParserSpec       |
-        | API.EdgeParserSpec       |
+Feature: Unit Test Feature
+@unit
+Scenario Outline: Unit Test Scenario
+    Then The unit tests called "<testName>" should pass
+    Examples:
+    | testName                 |
+    | state.AnimationStateSpec |
+    | state.GraphStateSpec     |
+    | API.NodeParserSpec       |
+    | API.EdgeParserSpec       |
 ```
 
 L'idea alla base del codice di seguito consiste nel creare uno step di Cucumber che esegua i test specificati in testName e verifichi che il loro valore di uscita sia pari a 0, indicando che i test sono stati superati con successo. Questo approccio mira a fornire una conferma chiara al cliente che i test siano passati e che il codice sia funzionante. Utilizzare direttamente Cucumber per testare il codice è un'idea che potrebbe essere valutata in futuro, ma attualmente presenta alcune problematiche che ne riducono l'efficienza. Nello specifico, questo metodo introduce diverse viscosità e rende il processo di sviluppo tramite TDD significativamente più lento. Per queste ragioni, si è preferito adottare l'approccio descritto sopra, che permette una verifica più rapida e diretta del codice.
@@ -69,11 +69,11 @@ class UnitTestWrapper extends ScalaDsl with EN:
 D'altra parte l'approccio BDD è stato adottato per testare l'interfaccia grafica e le funzionalità dell'applicazione. In questo caso, Cucumber è stato utilizzato per definire i test e Selenium per simulare le interazioni utente. Questo approccio è stato scelto per garantire che l'applicazione soddisfi i requisiti funzionali e che le funzionalità siano implementate correttamente.
 
 ```gherkin
-    @web
-    Scenario: High Update Rate Support
-        Given I am on the Scafi Web Page
-        Then the engine "EngineImpl" is loaded
-        Then the graph 10x10x2 should support more than "30" updates per second
+@web
+Scenario: High Update Rate Support
+    Given I am on the Scafi Web Page
+    Then the engine "EngineImpl" is loaded
+    Then the graph 10x10x2 should support more than "30" updates per second
 ```
 
 ### Cucumber - CI/CD
@@ -85,13 +85,13 @@ Purtroppo alcuni test cucumber devono per forza essere eseguiti in un ambiente g
 Sono stati inoltre implementati dei test d'architettura per mezzo di ArchUnit, che verificano per esempio che il dominio non abbia lcuna dipendenza estera.
 
 ```scala
-  noDependTest(
-    testName =
-      "Domain package should only depend on itself and standard libraries",
-    importRoot = "domain..",
-    packageToCheck = "..domain..",
-    forbiddenPackages = Seq("..laminar..", "..state..", "..js.."),
-    becauseMsg =
-      "Domain layer should be isolated from infrastructure and application layers"
+noDependTest(
+  testName =
+    "Domain package should only depend on itself and standard libraries",
+  importRoot = "domain..",
+  packageToCheck = "..domain..",
+  forbiddenPackages = Seq("..laminar..", "..state..", "..js.."),
+  becauseMsg =
+    "Domain layer should be isolated from infrastructure and application layers"
   )
 ```

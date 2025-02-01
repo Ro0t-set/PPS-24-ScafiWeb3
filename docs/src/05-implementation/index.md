@@ -134,15 +134,15 @@ Questo codice definisce uno stato reattivo per un grafo, evidenziando come all'e
 ## Engine Loop
 
 ```scala
-  override def start(): Unit =
-    def loop(): Unit =
-      if running.now() then
-        val batchCount = batch.now()
-        for _ <- 1 to batchCount do getEngineOrEmpty.executeIterations()
-        animationObserver.onNext(NextTickAdd(batchCount + 1))
-        handleNewData(processNextBatch())
-        setTimeout(() => loop(), loopInterval)
-    loop()
+override def start(): Unit =
+  def loop(): Unit =
+    if running.now() then
+      val batchCount = batch.now()
+      for _ <- 1 to batchCount do getEngineOrEmpty.executeIterations()
+      animationObserver.onNext(NextTickAdd(batchCount + 1))
+      handleNewData(processNextBatch())
+      setTimeout(() => loop(), loopInterval)
+  loop()
 ```
 
 Questa funzione gestisce il loop di animazione, che viene eseguito ricorsivamente finché il flag `running` è impostato su `true`. Ad ogni iterazione, esegue un numero di batch definito dalla variabile reattiva `batch`, permettendo così di regolare dinamicamente la velocità di esecuzione dell'animazione. È importante notare che la chiamata ricorsiva viene effettuata tramite `setTimeout`, garantendo che il thread principale rimanga non bloccato, consentendo al sistema di gestire altre operazioni. Al contrario il ciclo regolato dal batch blocca l'event loop, quindi impostare un batch troppo grande potrebbe causare rallentamenti significativi.
