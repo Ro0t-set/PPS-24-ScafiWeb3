@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "./node_modules/.bin/vite",
     "build": "./node_modules/.bin/vite build",
-    "preview": "./node_modules/.bin/vite preview",
+    "preview": "./node_modules/.bin/vite preview --host 0.0.0.0",
     "docs:dev": "./node_modules/.bin/vitepress dev docs",
     "docs:build": "./node_modules/.bin/vitepress build docs",
     "docs:preview": "./node_modules/.bin/vitepress preview docs"

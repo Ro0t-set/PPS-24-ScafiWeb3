@@ -27,7 +27,7 @@ npm run dev
 
 ```bash
 docker build -t scafiweb3 .
-docker run --rm -it -p 4173:4173 scafiweb3
+docker run -p 4173:4173 scafiweb3
 ```
 ---
 
