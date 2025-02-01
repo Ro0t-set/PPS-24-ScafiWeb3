@@ -155,9 +155,11 @@ classDiagram
 
 ### Testing
 
-- Cucumber 8.25.x
 - MUnit 1.0.x
+- Munit-scalacheck 1.1.x
+- Cucumber 8.25.x
 - Selenium 4.1.x
+- ArchUnit 1.3.x
 
 ### Compilazione del Programma Aggregato
 

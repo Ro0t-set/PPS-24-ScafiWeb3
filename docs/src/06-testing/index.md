@@ -1,6 +1,27 @@
 # Testing
 
-Durante le prime fasi di sviluppo del progetto, i test non sono stati sviluppati, poiché l'obiettivo principale era creare un prototipo funzionante. Tuttavia, per garantire la correttezza delle funzionalità implementate, una volta ottenuto il prototipo, è stato adottato fin da subito un approccio **Test-Driven Development (TDD)** utilizzando [MUnit](https://scalameta.org/munit/) assieme a [ScalaCheck](https://scalameta.org/munit/docs/integrations/scalacheck.html). Successivamente, raggiunta una versione stabile del progetto, si è adottato l'approccio **Behavior-Driven Development (BDD)** impiegando [Cucumber](https://cucumber.io/) integrato con [Selenium](https://www.selenium.dev/).
+Durante le prime fasi di sviluppo del progetto, i test non sono stati usati, poiché l'obiettivo principale era fare uno studio di fattibilità del progetto. Tuttavia, per garantire la correttezza delle funzionalità implementate, una volta ottenuto il prototipo, è stato adottato fin da subito un approccio **Test-Driven Development (TDD)** utilizzando [MUnit](https://scalameta.org/munit/) assieme a [ScalaCheck](https://scalameta.org/munit/docs/integrations/scalacheck.html). Successivamente, raggiunta una versione stabile del progetto, si è adottato l'approccio **Behavior-Driven Development (BDD)** impiegando [Cucumber](https://cucumber.io/) integrato con [Selenium](https://www.selenium.dev/). Inloco, per garantire la correttezza dell'architettura, sono stati implementati dei test d'architettura utilizzando [ArchUnit](https://www.archunit.org/), e la coverage dei test è stata monitorata tramite [sbt-scoverage](https://github.com/scoverage/sbt-scoverage).
+
+## Struttura dei test
+
+L' architettura dei test che andrà a presentare è stata progettata per evitare numerosi errori dati dal [linker di Scala.js](https://www.scala-js.org/doc/project/linking-errors.html).
+
+```scala
+graph LR
+  js["scafiWeb3
+  (scalajs-dom, laminar, upickle, Munit)"]
+  analysis["scafiWeb3StaticAnalysis
+  (ArchUnit, Coverage)"]
+  cucumber["scafiWeb3Cucumber (cucumber)"]
+
+  analysis --> js
+```
+
+L'idea dietro la divisione dei test è quella di evitare che i test di Scala.js vengano eseguiti in un ambiente JVM, poiché ciò potrebbe causare errori di collegamento. Per questo motivo, i test di Scala.js sono stati separati dai test JVM e sono stati eseguiti in un ambiente separato. Inoltre, i test di Scala.js sono stati divisi in due parti: i test di unità e i test di integrazione. I test di unità sono stati eseguiti utilizzando MUnit e ScalaCheck, mentre i test di integrazione sono stati eseguiti utilizzando Cucumber e Selenium. I test JVM sono stati eseguiti utilizzando MUnit e ScalaCheck. Infine, i test d'architettura sono stati eseguiti utilizzando ArchUnit e la copertura dei test è stata monitorata utilizzando sbt-scoverage.
+
+::: info
+La coverage viene calcolata solo sui package `domain` e `API`, poiché sono gli unici package che non dipendono in alcun modo da Scala.js.
+:::
 
 ## MUnit
 
@@ -58,3 +79,19 @@ D'altra parte l'approccio BDD è stato adottato per testare l'interfaccia grafic
 ### Cucumber - CI/CD
 
 Purtroppo alcuni test cucumber devono per forza essere eseguiti in un ambiente grafico, quindi non possono essere eseguiti in un ambiente headless. Le github actions non supportano l'ambiente grafico, quindi non è possibile eseguire alcuni test cucumber in CI/CD. Per ovviare a questo problema, sono stati creati dei [comandi personalizzati](../introduction.md) tramite sbt.
+
+## ArchUnit
+
+Sono stati inoltre implementati dei test d'architettura per mezzo di ArchUnit, che verificano per esempio che il dominio non abbia lcuna dipendenza estera.
+
+```scala
+  noDependTest(
+    testName =
+      "Domain package should only depend on itself and standard libraries",
+    importRoot = "domain..",
+    packageToCheck = "..domain..",
+    forbiddenPackages = Seq("..laminar..", "..state..", "..js.."),
+    becauseMsg =
+      "Domain layer should be isolated from infrastructure and application layers"
+  )
+```
