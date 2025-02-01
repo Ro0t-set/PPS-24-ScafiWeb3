@@ -6,7 +6,7 @@ Durante le prime fasi di sviluppo del progetto, i test non sono stati usati, poi
 
 L' architettura dei test che andrà a presentare è stata progettata per evitare numerosi errori dati dal [linker di Scala.js](https://www.scala-js.org/doc/project/linking-errors.html).
 
-```scala
+```mermaid
 graph LR
   js["scafiWeb3
   (scalajs-dom, laminar, upickle, Munit)"]
