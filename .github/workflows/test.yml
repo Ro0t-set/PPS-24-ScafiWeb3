@@ -47,4 +47,4 @@ jobs:
           npm install
           cd ..
           npm install
-          sbt J-Xmx6G fastLinkJS scalafmtCheckAll
+          sbt -J-Xmx6G scalafmtCheckAll
