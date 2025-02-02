@@ -1,7 +1,7 @@
 
 # Requisiti
 
-## Buisness
+## Business
 
 L'applicazione deve permettere di caricare un programma aggregato, visualizzarlo in un grafo 3D e permettere di eseguirlo. La compilazione del programma deve avvenire runtime, utilizzando un server esterno.
 
@@ -136,10 +136,10 @@ classDiagram
 
 ## Requisiti Opzionali
 
-1. Possibilità di centrare il grafo.
-2. Possibilità di cambiare il colore dei nodi.
-3. Nascondere il boilerplate Scastie.
-4. Cambiare la visualizzazione da 3D a 2D, eliminando quindi la possibilità di ruotare la camera.
+1. Possibilità di centrare il grafo automaticamente. ✅
+2. Possibilità di cambiare il colore dei nodi. ✅
+3. Nascondere il boilerplate Scastie. ❌
+4. Cambiare la visualizzazione da 3D a 2D, eliminando quindi la possibilità di ruotare la camera. ✅
 
 ## Tecnologie ed Implementazione
 

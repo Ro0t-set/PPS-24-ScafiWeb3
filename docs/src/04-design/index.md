@@ -156,7 +156,7 @@ classDiagram
 
 ## State
 
-Il package `state` si occupa di gestire lo stato dell'app andando a definire le strutture dati e le interfacce necessarie per mantenere lo stato dell'applicazione. Inoltre, definisce le interfacce per la gestione dei comandi e degli eventi. Lo stato dell'applicazione è totalmente reattivo, in modo da garantire una gestione efficiente e coerente degli aggiornamenti. Lo stato è modificabile solo tramite comandi.
+Il package `state` si occupa di gestire lo stato dell'app andando a definire le strutture dati e le interfacce necessarie. Inoltre, definisce le interfacce per la gestione dei comandi e degli eventi. Lo stato dell'applicazione è totalmente reattivo, in modo da garantire una gestione efficiente e coerente degli aggiornamenti. Lo stato è modificabile solo tramite comandi.
 
 ```mermaid
 classDiagram

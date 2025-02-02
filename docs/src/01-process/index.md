@@ -33,6 +33,8 @@ La documentazione del progetto è redatta utilizzando il linguaggio Markdown. Vi
 
 Per la generazione della documentazione in formato HTML è stato utilizzato il tool [vitepress](https://vitepress.vuejs.org/) in maniera da integrare la documentazione con il progetto che già utilizza _Vite_.
 
+## ScalaDoc
+
 ::: warning
 Al momento dell'esame non è stato possibile generare la scala doc: [GitHub Issue](https://github.com/scala/scala3/issues/22447)
 :::

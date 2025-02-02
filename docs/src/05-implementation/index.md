@@ -1,6 +1,10 @@
 # Implementazione
 
-## Comunicazione Scastie - Applicazione
+## Scastie
+
+Come specificato nel requisito funzionale di sistema n.1, l'applicazione deve permette di compilare il codice Scala direttamente dalla pagina web utilizzando il servizio online fornito da Scastie. Questo servizio permette di scrivere e compilare codice Scala in tempo reale, offrendo un'interfaccia semplice e intuitiva per la compilazione di programmi.
+
+### Integrazione
 
 Il principio fondamentale che regola l'interazione tra Scastie e l'applicazione si basa sul concetto delle facade types di JavaScript. Questi tipi permettono di definire interfacce Scala che corrispondono ai tipi JavaScript, consentendo l'interoperabilità con librerie esterne.
 
@@ -8,8 +12,8 @@ Nel dettaglio, Scastie espone delle API accessibili tramite JavaScript, che veng
 
 Questa implementazione presenta sia vantaggi che svantaggi:
 
-Vantaggi: Il codice di Scastie è completamente indipendente e può essere utilizzato per integrare qualsiasi libreria di aggregate computing, a condizione che rispetti il trait e il formato JSON previsto.
-Svantaggi: L'uso di JSON implica la necessità di effettuare il parsing dei dati, un'operazione che in questo caso può risultare onerosa.
+- **Vantaggi**: Il codice di Scastie è completamente indipendente e può essere utilizzato per integrare qualsiasi libreria di aggregate computing, a condizione che rispetti il trait e il formato JSON previsto.
+- **Svantaggi**: L'uso di JSON implica la necessità di effettuare il parsing dei dati, un'operazione che può risultare onerosa. Inoltre, l'uso di js.Dynamic può rendere il codice più difficile da leggere e mantenere, in quanto non fornisce informazioni sul tipo degli oggetti.
 
 ```mermaid
 graph TD
@@ -60,9 +64,36 @@ case class EngineImpl(ncols: Int, nrows: Int, ndepth: Int)(
 )(proximityThreshold: Int) extends EngineApi: ...
 ```
 
+### Caricamento del codice
+
+L'editor online e il codice vengono caricati nella pagina tramite JavaScript. Questo permette di integrare facilmente Scastie nell'applicazione, consentendo agli utenti di compilare e visualizzare il codice direttamente dalla pagina web.
+
+```javascript
+scastie.Embedded('#code', {
+            user: user,
+            base64UUID: base64UUID,
+            update: parseInt(update)
+        });
+```
+
+Per come funziona Scastie, una volta che il codice è stato compilato, e quindi è pronto ad essere usato, viene generato un evento che viene intercettato dall'applicazione per caricare il il motore.
+
+```scala
+def newScastieLoadingSignal(
+    result: scala.scalajs.js.Any,
+    attachedElements: scala.scalajs.js.Any,
+    scastieId: scala.scalajs.js.Any
+): Unit =
+  engineController.loadEngine()
+  scene.centerView()
+  
+scala.scalajs.js.Dynamic.global.scastie.ClientMain.signal =
+  newScastieLoadingSignal
+```
+
 ## Domanin
 
-Di seguito il cuore dell'applicazione, il dominio, che definisce i tipi e le strutture dati utilizzate. Questo modulo è progettato per essere indipendente dall'implementazione specifica del motore di rendering, consentendo di riutilizzare il codice in contesti diversi. Da notare quindi che sono stati usati solo tipi primitivi evitando qualunque riferimento a librerie esterne.
+Di seguito il cuore dell'applicazione, il dominio, che definisce i tipi e le strutture dati utilizzate. Questo modulo è progettato per essere indipendente dall'implementazione specifica del motore di rendering, consentendo di riutilizzare il codice a prescindere dal formato del motore. Da notare quindi che sono stati usati solo tipi primitivi evitando qualunque riferimento a librerie esterne.
 
 ```scala
 sealed trait GraphType:
@@ -97,6 +128,23 @@ object AnimationDomain:
   case class StartAnimation[Engine]()           extends AnimationCommand[Engine]
 ```
 
+### Estensione del dominio
+
+Per evitare di appesantire il dominio con funzionalità non strettamente legate alla rappresentazione del grafo, sono state utilizzate le extension methods per aggiungere funzionalità aggiuntive ai tipi definiti nel dominio. Questo approccio permette di estendere le funzionalità dei tipi senza modificarli direttamente, mantenendo così il codice più pulito e modulare.
+
+```scala
+object DomainExtensions:
+  extension (edge: GraphEdge)
+    def object3dName: String =
+      val (n1, n2) = edge.nodes
+      val (minId, maxId) =
+        if n1.id < n2.id then (n1.id, n2.id) else (n2.id, n1.id)
+      s"edge-$minId-$maxId-$n1-$n2"
+
+  extension (node: GraphNode)
+    def object3dName: String = s"node-${node.id}"
+```
+
 ### Uso dei Type Alias
 
 Nella parte relativa a GraphType, vengono definiti degli alias (Id, Color, Label) per rappresentare tipi comunemente utilizzati, come Int e String. Questo approccio migliora la leggibilità e l'auto-documentazione del codice, permettendo di distinguere semanticamente i diversi utilizzi di tipi primitivi all'interno del dominio.
@@ -106,6 +154,8 @@ Nella parte relativa a GraphType, vengono definiti degli alias (Id, Color, Label
 Nel' AnimationDomain, il tipo generico [Engine] viene introdotto per evitare dipendenze forti con un motore di rendering o un'implementazione specifica. Questo approccio consente al dominio di rimanere indipendente e riutilizzabile con qualsiasi tipo di "engine" che si voglia integrare.
 
 ## State
+
+Il modulo State definisce lo stato reattivo dell'applicazione. Questo modulo è progettato per essere indipendente dall'implementazione specifica del motore di rendering, consentendo di riutilizzare il codice a prescindere dal formato del motore. Lo stato reattivo è implementato utilizzando la libreria _Laminar_, che fornisce un'implementazione reattiva degli oggetti.
 
 ```scala
 trait GraphState:
@@ -151,7 +201,7 @@ Questa funzione gestisce il loop di animazione, che viene eseguito ricorsivament
 
 Per l'implementazione del grafo 3D è stata scelta [Three.js](https://threejs.org/), una delle librerie più popolari in JavaScript per la creazione e gestione di scene e oggetti tridimensionali. Questa libreria offre un'ampia gamma di funzionalità, rendendola ideale per la visualizzazione e l'interazione con grafi in un contesto 3D.
 
-Durante il processo di tipizzazione da JavaScript a Scala, sono stati incontrati problemi nella risoluzione completa dell'albero dei tipi utilizzando i comandi `npm install --save @types/three` e successivamente sbt `fastLinkJS`. Questi problemi derivano principalmente dalle differenze tra i sistemi di tipi di JavaScript e Scala.js.
+Durante il processo di tipizzazione da JavaScript a Scala, sono stati incontrati problemi nella risoluzione completa dell'albero dei tipi utilizzando i comandi `npm install --save @types/three` e successivamente sbt `fastLinkJS`.
 
 Per ovviare a queste limitazioni, è stato necessario adottare due strategie:
 
@@ -218,7 +268,7 @@ Nel codice viene wrappata la funzione generica`remove` con `removeObject` per el
 
 ### Ottimizzazione dell rendering
 
-Per come è strutturato il dominio, gli unici comandi disponibili sono `SetNodes` e `SetEdges`, andando quindi a caricare ogni volta l'intero grafo. Questo approccio, seppur semplice, può risultare inefficiente in caso di grafi molto grandi, in quanto richiede di ricaricare l'intero grafo ad ogni aggiornamento. Per questo motivo, lo stato del grafo si tiene in memoria delle copie degli oggetti già caricati, in modo da evitare di ricaricare oggetti presenti che non sono stati modificati. Avere questo approccio è stato fondamentale per rispettare il requisito funzionale n.7, ovvero supportare più di 30 aggiornamenti al secondo.
+Per come è strutturato il dominio, gli unici comandi disponibili sono `SetNodes` e `SetEdges`, andando quindi a caricare ogni volta l'intero grafo. Questo approccio, seppur semplice, può risultare inefficiente in caso di grafi molto grandi, in quanto richiede di ricaricare l'intero grafo ad ogni aggiornamento. Per questo motivo, lo stato del grafo si tiene in memoria delle copie degli oggetti già caricati, in modo da evitare di ricaricare oggetti presenti che non sono stati modificati. Avere questo approccio è stato fondamentale per rispettare il requisito funzionale di sistema n.7, ovvero supportare più di 30 aggiornamenti al secondo.
 
 ```scala
 
@@ -227,7 +277,7 @@ override def setNodes(newNodes: Set[GraphNode]): Unit =
   removeNodes(nodesToRemove)
   addNodes(nodesToAdd)
   state = state.copy(currentNodes = newNodes)
-
+π
 private def addNodes(nodesToAdd: Set[GraphNode]): Unit =
   val newObjects =
     for
@@ -238,23 +288,6 @@ private def addNodes(nodesToAdd: Set[GraphNode]): Unit =
       node.object3dName -> nodeObject
   state = state.copy(nodeObjects = state.nodeObjects ++ newObjects)
 ```
-
-## Extension
-
-```scala
-object DomainExtensions:
-  extension (edge: GraphEdge)
-    def object3dName: String =
-      val (n1, n2) = edge.nodes
-      val (minId, maxId) =
-        if n1.id < n2.id then (n1.id, n2.id) else (n2.id, n1.id)
-      s"edge-$minId-$maxId-$n1-$n2"
-
-  extension (node: GraphNode)
-    def object3dName: String = s"node-${node.id}"
-```
-
-In questo modo viene esteso il dominio con funzionalità aggiuntive, come la generazione di nomi univoci per gli oggetti 3D rappresentanti nodi e archi. Questo permette di semplificare la gestione degli oggetti nella scena 3D, garantendo che ciascun oggetto abbia un nome per identificarlo.
 
 ## Laminar View
 
@@ -284,15 +317,3 @@ def render(): Unit =
 ```
 
 Questo è il punto di ingresso dell'applicazione, dove viene definita la struttura della pagina web. Viene utilizzata la libreria Laminar per la creazione della vista, che permette di definire in modo dichiarativo la struttura del DOM e le interazioni tra i vari componenti. In particolare, vengono definiti i componenti principali della vista, come la scena 3D, i controlli per l'animazione e le impostazioni del motore di rendering. La vista viene aggiornata in modo reattivo in base allo stato dell'applicazione, garantendo una corretta sincronizzazione tra i dati e la rappresentazione grafica.
-
-## Scastie - Caricamento del codice
-
-L'editor e il codice vengono caricati nella pagina tramite JavaScript. Questo permette di integrare facilmente Scastie nell'applicazione, consentendo agli utenti di compilare e visualizzare il codice direttamente dalla pagina web.
-
-```javascript
-scastie.Embedded('#code', {
-            user: user,
-            base64UUID: base64UUID,
-            update: parseInt(update)
-        });
-```
