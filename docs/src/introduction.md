@@ -18,10 +18,8 @@ npm run dev
 
 ### Docker
 
-
-**min 4gb of docker memory**
-
 ```bash
+# min 4gb of docker memory
 docker build -t scafiweb3 .
 docker run --rm -it -p 4173:4173 scafiweb3
 ```
