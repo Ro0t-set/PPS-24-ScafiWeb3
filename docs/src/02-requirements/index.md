@@ -105,31 +105,31 @@ classDiagram
     AnimationDomain --> AnimationCommand
 ```
 
-## Funzionali
+## Requisiti Funzionali
 
 ### Utente
 
-1. L'utente deve poter caricare di un programma aggregato.
-2. L'utente deve poter visualizzare il grafo generato in 3d,
+1. L'utente deve poter caricare un programma aggregato.
+2. L'utente deve poter visualizzare il grafo generato in 3d.
 3. L'utente deve poter controllare l'esecuzione del programma aggregato.
 4. L'utente deve poter decidere le dimensioni del grafo.
 5. L'utente deve poter interagire con l'applicazione tramite un'interfaccia grafica disponibile online.
 6. L'utente deve poter modificare i parametri del grafo iniziale.
 7. L'utente deve poter cambiare la visualizzazione del grafo da 3D a 2D.
 8. L'utente deve poter cambiare il colore dei nodi.
-9. L'utente deve poter scegliere tra una serie d'esempi di programmi aggregati predefiniti.
+9. L'utente deve poter scegliere tra una serie d' esempi di programmi aggregati predefiniti.
 
 ### Sistema
 
-1. Utilizzo di *Scastie* per la compilazione del programma aggregato.
-2. Possibilità di caricare codice direttamente dal proprio account *Scastie*.
-3. Visualizzatore 3D del grafo generato.
-4. Player per la gestione del grafo con funzioni di *Play*, *Pausa* e regolazione della velocità della simulazione.
-5. Possibilità di modificare i parametri del grafo iniziale come numero di nodi, il raggio di visibilità e la loro disposizione.
-6. Inclusione di vari esempi di programmi aggregati.
-7. Il grafo deve supportare più di 30 aggiornamenti al secondo.
+1. Il sistema deve poter usare *Scastie* per la compilazione del programma aggregato.
+2. Il sistema deve poter caricare codice direttamente dal proprio account *Scastie*.
+3. Il sistema deve poter gestire la visualizzazione realtime del del grafo 3D generato.
+4. Il sistema deve poter gestire il player del grafo con funzioni di *Play*, *Pausa* e regolazione della velocità della simulazione.
+5. Il sistema deve poter gestire diverse configurazioni del grafo come numero di nodi, il raggio di visibilità e la loro disposizione.
+6. Il sistema deve poter caricare molteplici programmi aggregati.
+7. Il sistema deve poter supportare più di 30 aggiornamenti al secondo.
 
-## Non funzionali
+## Requisiti Non funzionali
 
 1. Affidabilità: l'applicazione deve essere stabile, evitando crash.
 2. Documentazione: l'intero progetto deve essere ben documentato, in modo da facilitare la comprensione del codice.
@@ -141,8 +141,8 @@ classDiagram
 
 1. Possibilità di centrare il grafo automaticamente. ✅
 2. Possibilità di cambiare il colore dei nodi. ✅
-3. Nascondere il boilerplate Scastie. ❌
-4. Cambiare la visualizzazione da 3D a 2D, eliminando quindi la possibilità di ruotare la camera. ✅
+3. Possibilità di nascondere il boilerplate Scastie. ❌
+4. Possibilità di cambiare la visualizzazione da 3D a 2D, eliminando quindi la possibilità di ruotare la camera. ✅
 
 ## Tecnologie ed Implementazione
 
