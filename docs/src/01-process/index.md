@@ -2,7 +2,7 @@
 
 ## Messaggi di Commit
 
-Per la scrittura dei messaggi di commit, è stata adottata la convenzione [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/), che fornisce uno standard chiaro e coerente per descrivere le modifiche apportate al progetto. È stato inoltre utilizzato [_Open Commit_](https://github.com/marketplace/actions/opencommit-improve-commits-with-ai) per generare automaticamente i messaggi di commit.
+Per la scrittura dei messaggi di commit, è stata adottata la convenzione [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/), che fornisce uno standard chiaro e coerente per descrivere le modifiche apportate al progetto. È stato inoltre utilizzato [_Open Commit_](https://github.com/marketplace/actions/opencommit-improve-commits-with-ai) per generare automaticamente tramite AI i messaggi di commit.
 
 ## Testing
 
@@ -10,7 +10,7 @@ Per garantire la correttezza delle funzionalità sviluppate, è stato adottato l
 
 ## Build
 
-Come tool di build è stato scelto _sbt_, che gestisce le dipendenze del progetto e facilita l'esecuzione dei test e la generazione della documentazione.
+Come tool di build è stato scelto _sbt_, che gestisce le dipendenze del progetto e facilita l'esecuzione dei test e la generazione della documentazione. Inoltre viene usato [Vite](https://vitejs.dev/) per la generazione del bundle JavaScript.
 
 ## Qualità del Codice
 
@@ -25,7 +25,7 @@ Per mantenere elevati standard di qualità del codice, sono stati adottati i seg
 Per _Continuous Integration_ e _Continuous Deployment_, è stato scelto di utilizzare le GitHub Actions. Sono stati definiti i seguenti workflow:
 
 - **Pages Deploy**: Generazione dell'artefatto web e caricamento su GitHub Pages, comprendendo sia il progetto che la documentazione.
-- **Test & Format**: Esecuzione automatica dei test e verifica del formato del codice.
+- **Test & Format**: Esecuzione automatica dei test e verifica della formattazione del codice.
 
 ## Documentazione
 

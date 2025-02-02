@@ -77,6 +77,10 @@ classDiagram
     GraphDomain --> GraphEdge
     GraphDomain --> GraphCommand
 
+```
+
+```mermaid
+classDiagram
     %% =======================
     %% Animation Domain Model
     %% =======================
@@ -99,7 +103,6 @@ classDiagram
     %% Relationships
     AnimationDomain --> ViewMode : of type
     AnimationDomain --> AnimationCommand
-
 ```
 
 ## Funzionali
