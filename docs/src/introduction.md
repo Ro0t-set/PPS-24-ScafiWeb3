@@ -2,9 +2,13 @@
 
 ![Logo generato con ai](img/logo.png)
 
-Con questo progetto si pone l' obiettivo di facilitare lo sviluppo programmi aggregati. Le due principali funzionalità offerte sono la visualizzazione di un ambiente 3D e la possibilità di scrivere e compilare codice runtime. L'implementazione è stata fortemente vincolata dall'uso di Scastie, che è un servizio online che permette di scrivere e compilare codice Scala in tempo reale.
+Questo progetto si pone l' obiettivo di facilitare lo sviluppo di programmi aggregati. Le due principali funzionalità offerte sono la visualizzazione di un ambiente 3D e la possibilità di scrivere e compilare codice runtime. L'implementazione è stata fortemente vincolata dall'uso di Scastie, che è un servizio online che permette di scrivere e compilare codice Scala in tempo reale. Di seguito sono riportate le principali sfide affrontate durante lo sviluppo del progetto:
 
-## How to run the project
+- Comunicazione tra due moduli js creati dalla compilazione Scala.js di due programmi separati.
+- Adattare una libreria complessa come Three.js al mondo funzionale di scala.
+- Creare una struttura di testing il meno viscosa possibile in grado di coprire la maggior parte del codice.
+
+## Come eseguire il progetto
 
 ```bash
 git clone https://github.com/Ro0t-set/PPS-24-ScafiWeb3.git
@@ -38,11 +42,11 @@ docker run --rm -it -p 4173:4173 scafiweb3
 - `npm run docs:dev`
 - `npm run docs:build`
 
-## Example Code
+## Esempio di codice da eseguire su Scastie
 
 [Git repo](https://github.com/Ro0t-set/Scafi3DScastieExamples.git)
 
-## Example Photos
+## Foto d'esempio
 
 ![Scafi3 screen](img/screen.jpeg)
 

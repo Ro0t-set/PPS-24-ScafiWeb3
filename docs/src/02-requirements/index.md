@@ -140,9 +140,9 @@ classDiagram
 ## Requisiti Opzionali
 
 1. Possibilità di centrare il grafo automaticamente. ✅
-2. Possibilità di cambiare il colore dei nodi. ✅
-3. Possibilità di nascondere il boilerplate Scastie. ❌
-4. Possibilità di cambiare la visualizzazione da 3D a 2D, eliminando quindi la possibilità di ruotare la camera. ✅
+2. Possibilità di nascondere il boilerplate Scastie. ❌
+3. Possibilità di cambiare la visualizzazione da 3D a 2D, eliminando quindi la possibilità di ruotare la camera. ✅
+4. Creare un Boilerplate basato su [field4s](https://github.com/field4s/field4s)
 
 ## Tecnologie ed Implementazione
 
