@@ -12,15 +12,17 @@
 
 ## Architettura Generale
 
+Dal diagramma si può notare come il modulo generato da Scastie non presenta alcuna dipendenza e comunica con l'applicativo tramite API. Questo permette di mantenere l'applicativo indipendente da Scastie e di sostituire facilmente il modulo con un'altra implementazione.
+
 ```mermaid
 flowchart TD
     subgraph Domain
         B -->|Command| C[View]
         C -->|Observer| B
-        C --> D[Graph]
-        E[Scastie] -->|API| B[State]
+        C --> D[Graph Scene]
         C --> F[Components]
     end
+    E[Scastie] -->|API| B[State]
 ```
 
 ## Architettura del Grafo 3D
