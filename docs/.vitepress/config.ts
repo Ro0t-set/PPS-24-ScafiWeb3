@@ -4,6 +4,9 @@ import { withMermaid } from "vitepress-plugin-mermaid";
 // https://vitepress.dev/reference/site-config
 export default withMermaid(
   defineConfig({
+    sitemap: {
+      hostname: 'https://tommasopatriti.me/PPS-24-ScafiWeb3/'
+    },
     base: '/PPS-24-ScafiWeb3/',
     title: "ScafiWeb3",
     description: "ScafiWeb3 doc",
@@ -36,6 +39,9 @@ export default withMermaid(
       socialLinks: [
         { icon: 'github', link: 'https://github.com/Ro0t-set' }
       ]
+      
     }
+    
   })
+  
 );

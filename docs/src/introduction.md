@@ -1,6 +1,6 @@
 # Scafi Web 3D
 
-![logo](img/logo.png)
+![Logo generato con ai](img/logo.png)
 
 Con questo progetto si pone l' obiettivo di facilitare lo sviluppo programmi aggregati. Le due principali funzionalità offerte sono la visualizzazione di un ambiente 3D e la possibilità di scrivere e compilare codice runtime. L'implementazione è stata fortemente vincolata dall'uso di Scastie, che è un servizio online che permette di scrivere e compilare codice Scala in tempo reale.
 
