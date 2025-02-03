@@ -1,6 +1,6 @@
 package view.player
 
-import API.GraphAPI
+import api.GraphAPI
 import domain.AnimationDomain.NextTickAdd
 import org.scalajs.dom.console
 import state.AnimationState

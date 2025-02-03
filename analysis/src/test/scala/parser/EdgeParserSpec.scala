@@ -1,5 +1,6 @@
-package API
+package parser
 
+import api.EdgeParser
 import munit.FunSuite
 import munit.ScalaCheckSuite
 import org.scalacheck.Gen

@@ -7,6 +7,8 @@ Feature: Unit Test Feature
       | testName                 |
       | state.AnimationStateSpec |
       | state.GraphStateSpec     |
-      | API.NodeParserSpec       |
-      | API.EdgeParserSpec       |
+      | parser.NodeParserSpec    |
+      | parser.EdgeParserSpec    |
       | analysis.DependencySpec  |
+      | domain.DomainSpec        |
+      | api.ApiSpec              |

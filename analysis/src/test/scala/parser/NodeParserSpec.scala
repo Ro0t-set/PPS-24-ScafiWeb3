@@ -1,5 +1,6 @@
-package API
+package parser
 
+import api.NodeParser
 import domain.GraphDomain.GraphNode
 import domain.GraphDomain.Position
 import munit.FunSuite

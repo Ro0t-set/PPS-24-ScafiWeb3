@@ -1,4 +1,4 @@
-package API
+package api
 
 import domain.GraphDomain.GraphNode
 import domain.GraphDomain.Id
