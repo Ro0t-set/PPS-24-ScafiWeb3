@@ -8,7 +8,7 @@ import munit.ScalaCheckSuite
 import org.scalacheck.Prop.forAll
 
 class DomainSpec extends FunSuite with ScalaCheckSuite:
-  test("Edge from x to y is the same of y to x") {
+  test("edge from x to y is the same of y to x") {
     forAll {
       (
           id1: Int,
@@ -32,7 +32,7 @@ class DomainSpec extends FunSuite with ScalaCheckSuite:
     }
   }
 
-  test("Edges with different nodes is not equal") {
+  test("edges with different nodes is not equal") {
     forAll {
       (
           id1: Int,

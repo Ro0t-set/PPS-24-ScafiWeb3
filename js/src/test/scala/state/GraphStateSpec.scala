@@ -16,7 +16,7 @@ class GraphStateSpec extends FunSuite with ScalaCheckSuite:
     GraphState.commandObserver.onNext(SetNodes(Set.empty))
     GraphState.commandObserver.onNext(SetEdges(Set.empty))
 
-  test("addNode should add a node to the state") {
+  test("add a node to the state") {
     forAll {
       (id: Int, label: String, color: Int, x: Double, y: Double, z: Double) =>
         val node: Set[GraphNode] =
@@ -27,7 +27,7 @@ class GraphStateSpec extends FunSuite with ScalaCheckSuite:
     }
   }
 
-  test("addEdge should add an edge to the state") {
+  test("add an edge to the state") {
     forAll {
       (
           id1: Int,
@@ -56,7 +56,7 @@ class GraphStateSpec extends FunSuite with ScalaCheckSuite:
     }
   }
 
-  test("addEdgeById should add an edge to the state") {
+  test("add an edge to the state by nodes' ids") {
     forAll {
       (
           id1: Int,

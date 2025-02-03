@@ -42,7 +42,7 @@ class ApiSpec extends FunSuite with ScalaCheckSuite:
       "target": $target
       }]"""
 
-  test("Add nodes from JSON") {
+  test("add nodes from JSON") {
     forAll(validNodeJsonGen) {
       case (jsonString, validJsonNodeFromParams) =>
         GraphAPI.addNodesFromJson(
@@ -51,7 +51,7 @@ class ApiSpec extends FunSuite with ScalaCheckSuite:
     }
   }
 
-  test("Add edges from JSON") {
+  test("add edges from JSON") {
     forAll(validEdgeJsonGen) { jsonString =>
       GraphAPI.addEdgesFromJson(
         jsonString

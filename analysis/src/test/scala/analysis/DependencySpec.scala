@@ -30,19 +30,19 @@ class DependencySpec extends FunSuite:
 
   noDependTest(
     testName =
-      "Domain package should only depend on itself and standard libraries",
+      "domain package should only depend on itself and standard libraries",
     importRoot = "domain..",
     packageToCheck = "..domain..",
     forbiddenPackages = Seq("..laminar..", "..state..", "..js.."),
     becauseMsg =
-      "Domain layer should be isolated from infrastructure and application layers"
+      "domain layer should be isolated from infrastructure and application layers"
   )
 
   noDependTest(
-    testName = "State package should only depend on itself and Laminar",
+    testName = "state package should only depend on itself and Laminar",
     importRoot = "state..",
     packageToCheck = "..state..",
     forbiddenPackages = Seq("..view..", "..API.."),
     becauseMsg =
-      "State layer should be isolated from infrastructure and application layers"
+      "state layer should be isolated from infrastructure and application layers"
   )

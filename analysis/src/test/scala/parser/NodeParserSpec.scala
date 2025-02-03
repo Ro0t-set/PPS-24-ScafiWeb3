@@ -33,7 +33,7 @@ class NodeParserSpec extends FunSuite with ScalaCheckSuite:
       GraphNode(id, Position(x, y, z), label, color)
     )
 
-  test("NodeParser parses valid single node JSON") {
+  test("parses valid single node JSON") {
     forAll(validNodeJsonGen) {
       case (jsonString, validJsonNodeFromParams) =>
         NodeParser.parse(jsonString).fold(false) { nodes =>
@@ -42,7 +42,7 @@ class NodeParserSpec extends FunSuite with ScalaCheckSuite:
     }
   }
 
-  test("NodeParser handles invalid JSON") {
+  test("if JSON is invalid, no nodes are parsed without exceptions") {
     forAll(Gen.numStr) { invalidJson =>
       NodeParser.parse(invalidJson).isEmpty
     }

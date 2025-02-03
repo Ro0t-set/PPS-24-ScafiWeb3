@@ -25,73 +25,73 @@ class AnimationStateSpec extends FunSuite with ScalaCheckSuite:
 
   test("initial state validates default values") {
     Prop.all(
-      Prop(AnimationState.batch.now() == 1),
-      Prop(AnimationState.currentTick.now() == 0),
-      Prop(AnimationState.engine.now().isEmpty),
-      Prop(AnimationState.mode.now() == ViewMode.Mode3D)
+      AnimationState.batch.now() == 1,
+      AnimationState.currentTick.now() == 0,
+      AnimationState.engine.now().isEmpty,
+      AnimationState.mode.now() == ViewMode.Mode3D
     )
   }
 
-  test("SetEngine updates engine and resets state") {
+  test("updates engine and resets state") {
     forAll(Gen.const(js.Dynamic.literal())) { mockEngine =>
       AnimationState.animationObserver.onNext(SetEngine(mockEngine))
       Prop.all(
-        Prop(AnimationState.engine.now().contains(mockEngine)),
-        Prop(!AnimationState.running.now()),
-        Prop(AnimationState.currentTick.now() == 0)
+        AnimationState.engine.now().contains(mockEngine),
+        !AnimationState.running.now(),
+        AnimationState.currentTick.now() == 0
       )
     }
   }
 
-  test("StartAnimation manages running state") {
+  test("start animation") {
 
     AnimationState.animationObserver.onNext(StartAnimation())
-    Prop(AnimationState.running.now())
+    AnimationState.running.now()
 
   }
 
-  test("PauseAnimation stops animation") {
+  test("stops animation") {
 
     AnimationState.animationObserver.onNext(StartAnimation())
     AnimationState.animationObserver.onNext(PauseAnimation())
-    Prop(!AnimationState.running.now())
+    !AnimationState.running.now()
 
   }
 
-  test("NextTick increments current tick") {
+  test("increments current tick") {
 
     val initialTick = AnimationState.currentTick.now()
     AnimationState.animationObserver.onNext(NextTick())
-    Prop(AnimationState.currentTick.now() == initialTick + 1)
+    AnimationState.currentTick.now() == initialTick + 1
 
   }
 
-  test("AnimationBatch updates batch value") {
+  test("updates batch value") {
     forAll(Gen.choose(1, 10)) { batchValue =>
       AnimationState.animationObserver.onNext(AnimationBatch(batchValue))
-      Prop(AnimationState.batch.now() == batchValue)
+      AnimationState.batch.now() == batchValue
     }
   }
 
-  test("Reset restores initial state") {
+  test("restores initial state") {
 
     AnimationState.animationObserver.onNext(StartAnimation())
     AnimationState.animationObserver.onNext(NextTick())
     AnimationState.animationObserver.onNext(Reset())
     Prop.all(
-      Prop(!AnimationState.running.now()),
-      Prop(AnimationState.currentTick.now() == 0)
+      !AnimationState.running.now(),
+      AnimationState.currentTick.now() == 0
     )
 
   }
 
-  test("SwitchMode toggles between view modes") {
+  test("Switch mode between view modes") {
 
     val initialMode = AnimationState.mode.now()
     AnimationState.animationObserver.onNext(SwitchMode())
-    Prop(
-      AnimationState.mode.now() ==
-        (if initialMode == ViewMode.Mode3D then ViewMode.Mode2D
-         else ViewMode.Mode3D)
-    )
+
+    AnimationState.mode.now() ==
+      (if initialMode == ViewMode.Mode3D then ViewMode.Mode2D
+       else ViewMode.Mode3D)
+
   }

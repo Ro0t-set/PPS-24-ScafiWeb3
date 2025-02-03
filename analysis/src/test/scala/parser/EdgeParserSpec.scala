@@ -17,7 +17,7 @@ class EdgeParserSpec extends FunSuite with ScalaCheckSuite:
       "target": $target
       }]"""
 
-  test("EdgeParser parses valid single edge JSON") {
+  test("parses valid single edge JSON") {
     forAll(validEdgeJsonGen) { jsonString =>
       EdgeParser.parse(jsonString).fold(false) { edges =>
         edges.size == 1
@@ -25,7 +25,7 @@ class EdgeParserSpec extends FunSuite with ScalaCheckSuite:
     }
   }
 
-  test("EdgeParser handles invalid JSON") {
+  test("if JSON is invalid, no edges are parsed without exceptions") {
     forAll(Gen.numStr) { invalidJson =>
       EdgeParser.parse(invalidJson).isEmpty
     }
