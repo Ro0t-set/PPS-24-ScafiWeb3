@@ -41,7 +41,17 @@ Il package `view` è ulteriormente suddiviso in:
 
 ## Dominio
 
-Il dominio è il cuore dell'applicazione, dove sono definiti i concetti fondamentali. È formato da due concetti: Le entità e i comandi ad esse associate. Le entità sono rappresentate da nodi e archi, mentre i comandi sono azioni che possono essere eseguite sul grafo.
+Il dominio è il cuore dell'applicazione ed è formato da due concetti: le entità e i comandi ad esse associate. Le entità sono rappresentate da nodi e archi, mentre i comandi sono azioni che possono essere eseguite sul grafo. In particolare è stato usato il **Command Pattern** per definire le operazioni sul grafo in modo flessibile e mantenere la coerenza dello stato. Il dominio non ha alcuna dipendenza da librerie esterne, garantendo la sua indipendenza e facilitando la sua testabilità.
+
+### Command Pattern
+
+Il Command Pattern è un pattern di design comportamentale che incapsula una richiesta come un oggetto, i principali vantaggi sono:
+
+- Separazione tra mittente e ricevitore → Il client che invoca un'azione non ha bisogno di conoscere i dettagli della sua esecuzione.
+- Estensibilità → Nuovi comandi possono essere aggiunti senza modificare il codice esistente.
+- Modularità → I comandi possono essere combinati, messi in coda e ripetuti in modo flessibile.
+
+### Struttura del Dominio del Grafo
 
 ```mermaid
 classDiagram
@@ -102,7 +112,15 @@ classDiagram
     GraphDomain --> GraphCommand
 ```
 
-Per quanto riguarda il dominio dell'animazione, sono definiti i comandi per controllare l'animazione, come l'avvio, la pausa, l'avanzamento di un singolo passo o di più passi alla volta, il reset e il cambio di modalità di visualizzazione.
+- **`GraphType`**: Definisce i tipi di base per il grafo, come `Id`, `Color` e `Label`.
+- **`Position`**: Rappresenta la posizione di un nodo nel grafo, con coordinate `x`, `y` e `z`.
+- **`GraphNode`**: Rappresenta un nodo del grafo, con un `Id`, una `Position`, una `Label` e un `Color`.
+- **`GraphEdge`**: Rappresenta un arco del grafo, con due nodi collegati.
+- **`SetNodes`**: Comando per aggiungere nodi al grafo.
+- **`SetEdges`**: Comando per aggiungere archi al grafo.
+- **`SetEdgesByIds`**: Comando per aggiungere archi al grafo specificando gli Id dei nodi.
+
+### Struttura del Dominio dell'Animazione
 
 ```mermaid
 classDiagram
@@ -152,11 +170,23 @@ classDiagram
     AnimationDomain --> AnimationCommand~Engine~
 ```
 
-È importante notare come tutto ciò che si trova in questo package non abbia dipendenze esterne, in modo da poter essere facilmente testato e riutilizzato.
+- **`ViewMode`**: Enumerazione per rappresentare la modalità di visualizzazione dell'animazione, con `Mode2D` e `Mode3D`.
+- **`SetEngine~Engine~`**: Comando per impostare il motore di animazione.
+- **`StartAnimation~Engine~`**: Comando per avviare l'animazione.
+- **`PauseAnimation~Engine~`**: Comando per mettere in pausa l'animazione.
+- **`NextTick~Engine~`**: Comando per aggiungere un tick all'animazione.
+- **`NextTickAdd~Engine~`**: Comando per aggiungere un numero specifico di tick all'animazione.
+- **`AnimationBatch~Engine~`**: Comando per specificare il numero di batch da eseguire.
+- **`Reset~Engine~`**: Comando per resettare l'animazione.
+- **`SwitchMode~Engine~`**: Comando per cambiare la modalità di visualizzazione.
 
 ## State
 
-Il package `state` si occupa di gestire lo stato dell'app andando a definire le strutture dati e le interfacce necessarie. Inoltre, definisce le interfacce per la gestione dei comandi e degli eventi. Lo stato dell'applicazione è totalmente reattivo, in modo da garantire una gestione efficiente e coerente degli aggiornamenti. Lo stato è modificabile solo tramite comandi.
+Il package `state` si occupa di gestire lo stato dell'app andando a definire le strutture dati e le interfacce necessarie. Inoltre, vengono implementati i comandi definiti precedentemente del dominio. Lo stato dell'applicazione è totalmente reattivo, in modo da garantire una gestione efficiente e coerente degli aggiornamenti. Lo stato è modificabile solo tramite comandi. In particolare è stato usato il pattern **Observer** per notificare gli aggiornamenti dello stato.
+
+### Observer Pattern
+
+L'Observer Pattern è un pattern di design comportamentale che definisce una dipendenza uno-a-molti tra oggetti, in modo che quando un oggetto cambia stato, tutti i suoi osservatori vengano notificati e aggiornati automaticamente.
 
 ```mermaid
 classDiagram

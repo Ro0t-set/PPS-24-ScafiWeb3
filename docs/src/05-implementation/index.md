@@ -277,7 +277,7 @@ override def setNodes(newNodes: Set[GraphNode]): Unit =
   removeNodes(nodesToRemove)
   addNodes(nodesToAdd)
   state = state.copy(currentNodes = newNodes)
-π
+
 private def addNodes(nodesToAdd: Set[GraphNode]): Unit =
   val newObjects =
     for
@@ -292,24 +292,18 @@ private def addNodes(nodesToAdd: Set[GraphNode]): Unit =
 ## Laminar View
 
 ```scala
-def render(): Unit =
-    val rootElement = div(
+val rootElement = div(
       scene.renderScene("three_canvas"),
       sceneController.render,
       animationController.render,
       engineSettings.render,
-      running --> {
-        case true => player.start()
-        case _    => ()
-      },
-      engine --> {
-        case Some(engine) => player.loadNextFrame()
-        case _            => ()
-      },
-      edges.combineWith(nodes) --> {
-        case (edges, nodes) =>
-          scene.setNodes(nodes)
-          scene.setEdges(edges)
+      running --> (isRunning => if isRunning then player.start()),
+      engine --> (maybeEngine =>
+        maybeEngine.foreach(_ => player.loadNextFrame())
+      ),
+      edges.combineWith(nodes) --> { case (es, ns) =>
+        scene.setNodes(ns)
+        scene.setEdges(es)
       },
       onMountCallback(_ => initialize())
     )
