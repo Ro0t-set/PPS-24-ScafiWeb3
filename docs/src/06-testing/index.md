@@ -4,23 +4,43 @@ Durante le prime fasi di sviluppo del progetto, i test non sono stati usati, poi
 
 ## Struttura dei test
 
-L' architettura dei test che andrà a presentare è stata progettata per evitare numerosi errori dati dal [linker di Scala.js](https://www.scala-js.org/doc/project/linking-errors.html).
+L'architettura dei test è stata progettata per prevenire errori legati al [linker di Scala.js](https://www.scala-js.org/doc/project/linking-errors.html).
 
 ```mermaid
 graph LR
   js["scafiWeb3
-  (scalajs-dom, laminar, upickle, Munit)"]
+  (scalajs-dom, laminar, Munit)"]
   analysis["scafiWeb3StaticAnalysis
   (ArchUnit, Coverage)"]
-  cucumber["scafiWeb3Cucumber (cucumber)"]
+  cucumber["scafiWeb3Cucumber"]
 
   analysis --> js
 ```
 
-L'idea dietro la divisione dei test è quella di evitare che i test di Scala.js vengano eseguiti in un ambiente JVM, poiché ciò potrebbe causare errori di collegamento. Per questo motivo, i test di Scala.js sono stati separati dai test JVM e sono stati eseguiti in un ambiente separato. Inoltre, i test di Scala.js sono stati divisi in due parti: i test di unità e i test di integrazione. I test di unità sono stati eseguiti utilizzando MUnit e ScalaCheck, mentre i test di integrazione sono stati eseguiti utilizzando Cucumber e Selenium. I test JVM sono stati eseguiti utilizzando MUnit e ScalaCheck. Infine, i test d'architettura sono stati eseguiti utilizzando ArchUnit e la copertura dei test è stata monitorata utilizzando sbt-scoverage.
+### Differenza tra Test Scala.js e Test JVM
+
+I **test Scala.js** e i **test JVM** differiscono principalmente nell’ambiente di esecuzione e nelle dipendenze di runtime:
+
+1. **Test Scala.js**  
+   - Richiedono il supporto del **plugin Scala.js**.
+   - Utilizzano librerie specifiche per l’ambiente JavaScript, come `scalajs-dom` per interagire con il DOM o `upickle` per la serializzazione JSON.  
+
+2. **Test JVM**  
+   - Sono eseguiti direttamente sulla JVM, senza alcuna necessità del plugin Scala.js.  
+   - Non richiedono alcuna conversione in JavaScript e possono sfruttare direttamente le librerie del mondo Java.
+   - Possono essere eseguiti con normali strumenti di test Scala come `MUnit`, `ScalaTest` o `JUnit`, senza preoccuparsi di compatibilità con l’ecosistema JavaScript.  
+
+### Implicazioni nella Progettazione dei Test
+
+Dato che i test Scala.js non possono essere eseguiti direttamente su una JVM, la suddivisione tra i due ambienti di test è fondamentale per evitare errori di collegamento. In particolare:
+
+- I **test Scala.js** vengono eseguiti in un ambiente separato, per evitare problemi di compatibilità.
+- I **test JVM** possono essere eseguiti indipendentemente dalla presenza o meno del plugin di Scala.js, garantendo una maggiore flessibilità.
+
+In particolare fare questa distinzione ha permesso di utilizzare al `scoverage` e `ArchUnit` che non possono essere eseguiti in un ambiente Scala.js.
 
 ::: info
-La coverage viene calcolata solo sui package `domain` e `API`, poiché sono gli unici package che non dipendono in alcun modo da Scala.js.
+La coverage viene calcolata solo sui package `domain` e i parser in `api`, poiché sono gli unici moduli che non dipendono in alcun modo da Scala.js.
 :::
 
 ## MUnit
@@ -51,8 +71,8 @@ Scenario Outline: Unit Test Scenario
     | testName                 |
     | state.AnimationStateSpec |
     | state.GraphStateSpec     |
-    | API.NodeParserSpec       |
-    | API.EdgeParserSpec       |
+    | api.NodeParserSpec       |
+    | api.EdgeParserSpec       |
 ```
 
 L'idea alla base del codice di seguito consiste nel creare uno step di Cucumber che esegua i test specificati in testName e verifichi che il loro valore di uscita sia pari a 0, indicando che i test sono stati superati con successo. Questo approccio mira a fornire una conferma chiara al cliente che i test siano passati e che il codice sia funzionante. Utilizzare direttamente Cucumber per testare il codice è un'idea che potrebbe essere valutata in futuro, ma attualmente presenta alcune problematiche che ne riducono l'efficienza. Nello specifico, questo metodo introduce diverse viscosità e rende il processo di sviluppo tramite TDD significativamente più lento. Per queste ragioni, si è preferito adottare l'approccio descritto sopra, che permette una verifica più rapida e diretta del codice.
@@ -82,7 +102,7 @@ Purtroppo alcuni test cucumber devono per forza essere eseguiti in un ambiente g
 
 ## ArchUnit
 
-Sono stati inoltre implementati dei test d'architettura per mezzo di ArchUnit, che verificano per esempio che il dominio non abbia lcuna dipendenza estera.
+Sono stati inoltre implementati dei test d'architettura per mezzo di ArchUnit, che verificano per esempio che il dominio non abbia alcuna dipendenza estera e che lo stato dipenda solo la laminar ed il dominio.
 
 ```scala
 noDependTest(
