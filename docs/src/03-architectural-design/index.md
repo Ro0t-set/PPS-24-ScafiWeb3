@@ -43,8 +43,6 @@ flowchart TD
 
 ## Principali Pattern Architetturali
 
-- **Component-Based Design**: La View è organizzata in componenti riutilizzabili, ognuno responsabile di un aspetto specifico dell’interfaccia. Questo semplifica la manutenzione e promuove la riusabilità.
-
 - **Adapter Pattern**: Utilizzato principalmente per adattare librerie esterne come Three.js all’interno del modulo Graph.
 
 - **Observer Pattern**: Utilizzato per notificare i cambiamenti di stato ai componenti interessati, garantendo la coerenza tra le diverse parti dell’applicazione.
