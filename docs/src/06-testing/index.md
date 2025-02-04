@@ -1,6 +1,6 @@
 # Testing
 
-Durante le prime fasi di sviluppo del progetto, i test non sono stati usati, poiché l'obiettivo principale era fare uno studio di fattibilità del progetto. Tuttavia, per garantire la correttezza delle funzionalità implementate, una volta ottenuto il prototipo, è stato adottato fin da subito un approccio **Test-Driven Development (TDD)** utilizzando [MUnit](https://scalameta.org/munit/) assieme a [ScalaCheck](https://scalameta.org/munit/docs/integrations/scalacheck.html). Successivamente, raggiunta una versione stabile del progetto, si è adottato l'approccio **Behavior-Driven Development (BDD)** impiegando [Cucumber](https://cucumber.io/) integrato con [Selenium](https://www.selenium.dev/). Inloco, per garantire la correttezza dell'architettura, sono stati implementati dei test d'architettura utilizzando [ArchUnit](https://www.archunit.org/), e la coverage dei test è stata monitorata tramite [sbt-scoverage](https://github.com/scoverage/sbt-scoverage).
+Durante le prime fasi di sviluppo del progetto, i test non sono stati usati, poiché l'obiettivo principale era fare uno studio di fattibilità del progetto. Tuttavia, per garantire la correttezza delle funzionalità implementate, una volta ottenuto il prototipo, è stato adottato fin da subito un approccio **Test-Driven Development (TDD)** utilizzando [MUnit](https://scalameta.org/munit/) assieme a [ScalaCheck](https://scalameta.org/munit/docs/integrations/scalacheck.html). Successivamente, raggiunta una versione stabile del progetto, si è adottato l'approccio **Behavior-Driven Development (BDD)** impiegando [Cucumber](https://cucumber.io/) integrato con [Selenium](https://www.selenium.dev/). Per garantire la correttezza dell'architettura, sono stati implementati dei test d'architettura utilizzando [ArchUnit](https://www.archunit.org/), e la coverage dei test è stata monitorata tramite [sbt-scoverage](https://github.com/scoverage/sbt-scoverage).
 
 ## Struttura dei test
 
@@ -23,7 +23,7 @@ I **test Scala.js** e i **test JVM** differiscono principalmente nell’ambiente
 
 1. **Test Scala.js**  
    - Richiedono il supporto del **plugin Scala.js**.
-   - Utilizzano librerie specifiche per l’ambiente JavaScript, come `scalajs-dom` per interagire con il DOM o `upickle` per la serializzazione JSON.  
+   - Utilizzano librerie specifiche per l’ambiente JavaScript, come `scalajs-dom` per interagire con il DOM.
 
 2. **Test JVM**  
    - Sono eseguiti direttamente sulla JVM, senza alcuna necessità del plugin Scala.js.  
@@ -32,15 +32,10 @@ I **test Scala.js** e i **test JVM** differiscono principalmente nell’ambiente
 
 ### Implicazioni nella Progettazione dei Test
 
-Dato che i test Scala.js non possono essere eseguiti direttamente su una JVM, la suddivisione tra i due ambienti di test è fondamentale per evitare errori di collegamento. In particolare:
-
-- I **test Scala.js** vengono eseguiti in un ambiente separato, per evitare problemi di compatibilità.
-- I **test JVM** possono essere eseguiti indipendentemente dalla presenza o meno del plugin di Scala.js, garantendo una maggiore flessibilità.
-
-In particolare fare questa distinzione ha permesso di utilizzare al `scoverage` e `ArchUnit` che non possono essere eseguiti in un ambiente Scala.js.
+Dato che i test Scala.js non possono essere eseguiti direttamente su una JVM, la suddivisione tra i due ambienti di test è fondamentale per evitare errori di collegamento. Fare questa distinzione ha permesso di utilizzare `scoverage` e `ArchUnit` che non possono essere eseguiti in un ambiente Scala.js.
 
 ::: info
-La coverage viene calcolata solo sui package `domain` e i parser in `api`, poiché sono gli unici moduli che non dipendono in alcun modo da Scala.js.
+La coverage viene calcolata solo sui package `domain` e sui parser in `api`, poiché sono gli unici moduli che non dipendono in alcun modo da Scala.js.
 :::
 
 ## MUnit
@@ -75,7 +70,7 @@ Scenario Outline: Unit Test Scenario
     | api.EdgeParserSpec       |
 ```
 
-L'idea alla base del codice di seguito consiste nel creare uno step di Cucumber che esegua i test specificati in testName e verifichi che il loro valore di uscita sia pari a 0, indicando che i test sono stati superati con successo. Questo approccio mira a fornire una conferma chiara al cliente che i test siano passati e che il codice sia funzionante. Utilizzare direttamente Cucumber per testare il codice è un'idea che potrebbe essere valutata in futuro, ma attualmente presenta alcune problematiche che ne riducono l'efficienza. Nello specifico, questo metodo introduce diverse viscosità e rende il processo di sviluppo tramite TDD significativamente più lento. Per queste ragioni, si è preferito adottare l'approccio descritto sopra, che permette una verifica più rapida e diretta del codice.
+L'idea alla base del codice che segue consiste nel creare uno step di Cucumber che esegua i test specificati in testName e verifichi che il loro valore di uscita sia pari a 0, indicando che i test sono stati superati con successo. Questo approccio mira a fornire una conferma chiara al cliente che i test siano passati e che il codice sia funzionante. Utilizzare direttamente Cucumber per testare il codice è un'idea che potrebbe essere valutata in futuro, ma attualmente presenta alcune problematiche che ne riducono l'efficienza. Nello specifico, questo metodo introduce diverse viscosità e rende il processo di sviluppo tramite TDD significativamente più lento. Per queste ragioni, si è preferito adottare l'approccio descritto sopra, che permette una verifica più rapida e diretta del codice.
 
 ```scala
 class UnitTestWrapper extends ScalaDsl with EN:
@@ -102,7 +97,7 @@ Purtroppo alcuni test cucumber devono per forza essere eseguiti in un ambiente g
 
 ## ArchUnit
 
-Sono stati inoltre implementati dei test d'architettura per mezzo di ArchUnit, che verificano per esempio che il dominio non abbia alcuna dipendenza estera e che lo stato dipenda solo la laminar ed il dominio.
+Sono stati inoltre implementati dei test d'architettura per mezzo di ArchUnit, che verificano per esempio che il dominio non abbia alcuna dipendenza esterna e che lo stato dipenda solo da laminar e dal dominio.
 
 ```scala
 noDependTest(

@@ -41,7 +41,7 @@ val engine = js.Dynamic.global.EngineImpl(
 
 ```
 
-Di seguito un esempio dei parte del boilerplate caricato e compilato tramite Scastie:
+Di seguito un esempio di parte del boilerplate caricato e compilato tramite Scastie:
 
 ```scala
 type Id = Int
@@ -76,7 +76,7 @@ scastie.Embedded('#code', {
         });
 ```
 
-Per come funziona Scastie, una volta che il codice è stato compilato, e quindi è pronto ad essere usato, viene generato un evento che viene intercettato dall'applicazione per caricare il il motore.
+Per come funziona Scastie, una volta che il codice è stato compilato, e quindi è pronto ad essere usato, viene generato un evento che viene intercettato dall'applicazione per caricare il motore.
 
 ```scala
 def newScastieLoadingSignal(
@@ -197,7 +197,7 @@ override def start(): Unit =
 
 Questa funzione gestisce il loop di animazione, che viene eseguito ricorsivamente finché il flag `running` è impostato su `true`. Ad ogni iterazione, esegue un numero di batch definito dalla variabile reattiva `batch`, permettendo così di regolare dinamicamente la velocità di esecuzione dell'animazione. È importante notare che la chiamata ricorsiva viene effettuata tramite `setTimeout`, garantendo che il thread principale rimanga non bloccato, consentendo al sistema di gestire altre operazioni. Al contrario il ciclo regolato dal batch blocca l'event loop, quindi impostare un batch troppo grande potrebbe causare rallentamenti significativi.
 
-## Three.js Types and Adapter
+## Three.js Types e Adapter
 
 Per l'implementazione del grafo 3D è stata scelta [Three.js](https://threejs.org/), una delle librerie più popolari in JavaScript per la creazione e gestione di scene e oggetti tridimensionali. Questa libreria offre un'ampia gamma di funzionalità, rendendola ideale per la visualizzazione e l'interazione con grafi in un contesto 3D.
 
@@ -205,8 +205,10 @@ Durante il processo di tipizzazione da JavaScript a Scala, sono stati incontrati
 
 Per ovviare a queste limitazioni, è stato necessario adottare due strategie:
 
-Aliasing: Sono stati definiti degli alias per rappresentare in Scala alcuni tipi complessi o mancanti di Three.js, semplificando la loro gestione.
-Casting: È stato utilizzato il casting esplicito per adattare i tipi dinamici di JavaScript alle strutture tipizzate di Scala. Questo ha permesso di sfruttare caratteristiche avanzate di Scala, come il pattern matching, mantenendo comunque la compatibilità con la libreria Three.js.
+- Aliasing: sono stati definiti degli alias per rappresentare in Scala alcuni tipi complessi o mancanti di Three.js, semplificando la loro gestione.
+- Casting: È stato utilizzato il casting esplicito per adattare i tipi dinamici di JavaScript alle strutture tipizzate di Scala.
+
+Questo ha permesso di sfruttare caratteristiche avanzate di Scala, come il pattern matching, mantenendo comunque la compatibilità con la libreria Three.js.
 Questa soluzione ha consentito di integrare Three.js nell'applicazione senza rinunciare ai vantaggi offerti dal sistema di tipi di Scala.
 
 ```scala
@@ -266,7 +268,7 @@ def removeObject(obj: GenericObject3D): Unit =
 
 Nel codice viene wrappata la funzione generica`remove` con `removeObject` per eliminare definitivamente un oggetto 3D dalla scena. Viene utilizzato il pattern matching per identificare il tipo dell'oggetto e procedere con la rimozione in base alla sua tipologia. Questo approccio consente di gestire in modo efficiente la rimozione di oggetti, come gruppi di oggetti o linee, garantendo la corretta liberazione della memoria.
 
-### Ottimizzazione dell rendering
+### Ottimizzazione del rendering
 
 Per come è strutturato il dominio, gli unici comandi disponibili sono `SetNodes` e `SetEdges`, andando quindi a caricare ogni volta l'intero grafo. Questo approccio, seppur semplice, può risultare inefficiente in caso di grafi molto grandi, in quanto richiede di ricaricare l'intero grafo ad ogni aggiornamento. Per questo motivo, lo stato del grafo si tiene in memoria delle copie degli oggetti già caricati, in modo da evitare di ricaricare oggetti presenti che non sono stati modificati. Avere questo approccio è stato fondamentale per rispettare il requisito funzionale di sistema n.7, ovvero supportare più di 30 aggiornamenti al secondo.
 

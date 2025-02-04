@@ -15,6 +15,7 @@ L'applicazione deve permettere di caricare un programma aggregato, visualizzarlo
 - **Velocità della Simulazione**: la velocità della simulazione è la velocità con cui il player esegue il programma aggregato.
 - **Parametri del Grafo**: i parametri del grafo sono le caratteristiche del grafo iniziale, come il numero di nodi, il raggio di visibilità e la loro disposizione.
 - **Boilerplate**: il boilerplate è il codice necessario per compilare il programma aggregato e farlo interagire con il grafo.
+- **Engine**: l'engine è il programma aggregato compilato.
 
 ## Modello di dominio
 
@@ -123,9 +124,9 @@ classDiagram
 
 1. Il sistema deve poter usare *Scastie* per la compilazione del programma aggregato.
 2. Il sistema deve poter caricare codice direttamente dal proprio account *Scastie*.
-3. Il sistema deve poter gestire la visualizzazione realtime del del grafo 3D generato.
+3. Il sistema deve poter gestire la visualizzazione realtime del grafo 3D generato.
 4. Il sistema deve poter gestire il player del grafo con funzioni di *Play*, *Pausa* e regolazione della velocità della simulazione.
-5. Il sistema deve poter gestire diverse configurazioni del grafo come numero di nodi, il raggio di visibilità e la loro disposizione.
+5. Il sistema deve poter gestire diverse configurazioni del grafo come il numero di nodi, il raggio di visibilità e la loro disposizione.
 6. Il sistema deve poter caricare molteplici programmi aggregati.
 7. Il sistema deve poter supportare più di 30 aggiornamenti al secondo.
 
@@ -140,9 +141,9 @@ classDiagram
 ## Requisiti Opzionali
 
 1. Possibilità di centrare il grafo automaticamente. ✅
-2. Possibilità di nascondere il boilerplate Scastie. ❌
-3. Possibilità di cambiare la visualizzazione da 3D a 2D, eliminando quindi la possibilità di ruotare la camera. ✅
-4. Creare un Boilerplate basato su [field4s](https://github.com/field4s/field4s)
+2. Possibilità di cambiare la visualizzazione da 3D a 2D, eliminando quindi la possibilità di ruotare la camera. ✅
+3. Creare un boilerplate basato su [field4s](https://github.com/field4s/field4s) ❌
+4. Possibilità di nascondere il boilerplate Scastie. ❌
 
 ## Tecnologie ed Implementazione
 

@@ -1,7 +1,5 @@
 # Architettura
 
-## Livelli
-
 - **Domain**: Contiene la logica di business e i concetti fondamentali del sistema. È la parte dell’applicazione, priva di dipendenze da framework o librerie specifiche e comune a tutto il progetto. All'interno sono modellate le entità e i comandi applicabili su di esse. Il codice di questo livello è usato da tutta l'applicazione.
 
 - **State**: Si occupa di gestire lo stato dell’applicazione e le sue transizioni. Contiene il meccanismo che tiene traccia delle modifiche al dominio ed espone operazioni per aggiornare lo stato.
@@ -12,7 +10,7 @@
 
 ## Architettura Generale
 
-Dal diagramma si può notare come il modulo generato da Scastie non presenta alcuna dipendenza e comunica con l'applicativo tramite API. Questo permette di mantenere l'applicativo indipendente da Scastie e di sostituire facilmente il modulo con un'altra implementazione.
+Dal diagramma si può notare come il motore generato da Scastie comunica con l'applicativo tramite API. Questo permette di mantenere l'applicativo indipendente da Scastie e di sostituire facilmente il modulo con un'altra implementazione.
 
 ```mermaid
 flowchart TD
@@ -22,7 +20,8 @@ flowchart TD
         C --> D[Graph Scene]
         C --> F[Components]
     end
-    E[Scastie] -->|API| B[State]
+    E["Engine 
+    (Scastie)"] -->|API| B[State]
 ```
 
 ## Architettura del Grafo 3D
@@ -42,11 +41,11 @@ flowchart TD
         E[View] --> D
 ```
 
-## Principali Pattenr Architetturali
+## Principali Pattern Architetturali
 
 - **Component-Based Design**: La View è organizzata in componenti riutilizzabili, ognuno responsabile di un aspetto specifico dell’interfaccia. Questo semplifica la manutenzione e promuove la riusabilità.
 
-- **Adapter Pattern**: Utilizzato principalmente nella Graph Infrastructure per adattare librerie o API esterne al modello e alle interfacce dell’applicazione, mantenendo l’applicazione (Domain/State/View) indipendente dai dettagli di implementazione.
+- **Adapter Pattern**: Utilizzato principalmente per adattare librerie esterne come Three.js all’interno del modulo Graph.
 
 - **Observer Pattern**: Utilizzato per notificare i cambiamenti di stato ai componenti interessati, garantendo la coerenza tra le diverse parti dell’applicazione.
 

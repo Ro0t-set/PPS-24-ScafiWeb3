@@ -176,7 +176,7 @@ classDiagram
 - **`PauseAnimation~Engine~`**: Comando per mettere in pausa l'animazione.
 - **`NextTick~Engine~`**: Comando per aggiungere un tick all'animazione.
 - **`NextTickAdd~Engine~`**: Comando per aggiungere un numero specifico di tick all'animazione.
-- **`AnimationBatch~Engine~`**: Comando per specificare il numero di batch da eseguire.
+- **`AnimationBatch~Engine~`**: Comando per specificare la grandezza del batch da eseguire.
 - **`Reset~Engine~`**: Comando per resettare l'animazione.
 - **`SwitchMode~Engine~`**: Comando per cambiare la modalità di visualizzazione.
 
@@ -186,7 +186,7 @@ Il package `state` si occupa di gestire lo stato dell'app andando a definire le 
 
 ### Observer Pattern
 
-L'Observer Pattern è un pattern di design comportamentale che definisce una dipendenza uno-a-molti tra oggetti, in modo che quando un oggetto cambia stato, tutti i suoi osservatori vengano notificati e aggiornati automaticamente.
+L'Observer Pattern è un pattern di design comportamentale che definisce una dipendenza uno-a-molti tra oggetti, in modo che, quando un oggetto cambia stato, tutti i suoi osservatori vengano notificati e aggiornati automaticamente.
 
 ```mermaid
 classDiagram
@@ -289,7 +289,7 @@ classDiagram
 
 ## View
 
-La view è gestita per mezzo di componenti grafici riutilizzabili, seguendo un approccio modulare. Ogni componente ha una responsabilità specifica, favorendo il riuso e la manutenibilità del codice.
+La view è tenuta aggiornata in maniera totalmente reattiva dallo stato dell'applicazione. In particolare, il package `view` è suddiviso in sotto package per gestire in modo modulare le diverse parti dell'interfaccia grafica. Ogni componente ha il suo controller responsabile della comunicazione con lo stato dell'applicazione.
 
 ```mermaid
 classDiagram
@@ -335,7 +335,7 @@ classDiagram
 
 ### Graph
 
-Il package `graph` si occupa di visualizzare il grafo in 3D. In particolare, definisce le interfacce per la gestione dei nodi e degli archi, e per la visualizzazione del grafo. È stato usato il pattern **Adapter** per adattare le interfacce del dominio a quelle della libreria Three.js. In questo modo è stato possibile separare la logica dell'applicazione dalla libreria grafica.
+Il package `graph` si occupa di visualizzare il grafo in 3D e definisce le interfacce per la gestione della visualizzazione di nodi e archi. È stato usato il pattern **Adapter** per adattare le interfacce del dominio a quelle della libreria Three.js. In questo modo è stato possibile separare la logica dell'applicazione dalla libreria grafica.
 
 ```mermaid
 classDiagram
